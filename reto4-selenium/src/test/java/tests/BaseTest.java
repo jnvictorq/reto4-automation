@@ -11,31 +11,27 @@ import org.openqa.selenium.WebDriver;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Listeners;
 
+import io.qameta.allure.testng.AllureTestNg;
+
+@Listeners({AllureTestNg.class})
 public class BaseTest {
 
     protected WebDriver driver;
 
     @AfterMethod
-    public void tearDown(ITestResult result)
-            throws IOException {
+    public void tearDown(ITestResult result) throws IOException {
 
-        if (result.getStatus()
-                == ITestResult.FAILURE) {
+        if (result.getStatus() == ITestResult.FAILURE) {
 
             File screenshot =
                     ((TakesScreenshot) driver)
-                            .getScreenshotAs(
-                                    OutputType.FILE
-                            );
+                            .getScreenshotAs(OutputType.FILE);
 
             FileUtils.copyFile(
                     screenshot,
-                    new File(
-                            "screenshots/"
-                                    + result.getName()
-                                    + ".png"
-                    )
+                    new File("screenshots/" + result.getName() + ".png")
             );
         }
 

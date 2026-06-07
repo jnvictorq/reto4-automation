@@ -14,8 +14,12 @@ module.exports = defineConfig({
   },
   video: true,
   screenshotOnRunFailure: true,
+
+  allowCypressEnv: true,
+
   e2e: {
     async setupNodeEvents(on, config) {
+      
       allureWriter(on, config);
 
       await addCucumberPreprocessorPlugin(on, config);
@@ -24,7 +28,6 @@ module.exports = defineConfig({
         plugins: [createEsbuildPlugin(config)],
       }));
 
-      // 👇 fuerza el patrón para que el bundler incluya los steps
       config.specPattern = "cypress/e2e/features/**/*.feature";
       config.excludeSpecPattern = ["**/*.cy.js"];
 

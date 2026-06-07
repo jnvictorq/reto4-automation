@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-06-07T01:10:27.720Z",
+    "end": "2026-06-07T01:10:38.756Z",
+    "duration": 11036,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "cc62eb22-d60c-4d0f-a800-b718a52f659c",
+      "title": "",
+      "fullFile": "cypress\\e2e\\purchase.cy.js",
+      "file": "cypress\\e2e\\purchase.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "1b6c2915-c4d7-45e1-9216-273ff098ee09",
+          "title": "Proceso de Compra",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Compra exitosa de un producto",
+              "fullTitle": "Proceso de Compra Compra exitosa de un producto",
+              "timedOut": null,
+              "duration": 8404,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "home.visit();\nproduct.selectProduct('Samsung galaxy s6');\nproduct.validateProductAdded();\nproduct.addToCart();\ncart.openCart();\ncart.placeOrder();\ncart.completePurchase('Juan', 'Bolivia', 'La Paz', '123456789', '06', '2026');\ncart.validatePurchaseSuccess();",
+              "err": {},
+              "uuid": "cad1ff82-9332-4750-a184-41c495a8f352",
+              "parentUUID": "1b6c2915-c4d7-45e1-9216-273ff098ee09",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "cad1ff82-9332-4750-a184-41c495a8f352"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 8404,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

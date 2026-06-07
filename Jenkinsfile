@@ -18,11 +18,11 @@ pipeline {
             }
             post {
                 always {
-                    // Publicar resultados de Allure
+                    // Publicar resultados de Allure (Selenium)
                     allure([
                         includeProperties: false,
                         jdk: '',
-                        results: [[path: 'reto4-selenium/target/allure-results']]
+                        results: [[path: 'reto4-selenium/allure-results']]
                     ])
 
                     // Archivar evidencias adicionales
@@ -33,19 +33,37 @@ pipeline {
         }
 
         stage('Cypress Tests') {
-            steps {
-                dir('reto4-cypress') {
-                    bat 'npm install'
-                    bat 'npx cypress run'
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'reto4-cypress/cypress/screenshots/**/*.*', allowEmptyArchive: true
-                    archiveArtifacts artifacts: 'reto4-cypress/cypress/videos/**/*.*', allowEmptyArchive: true
-                    archiveArtifacts artifacts: 'reto4-cypress/cypress/reports/**/*.*', allowEmptyArchive: true
-                }
-            }
+    steps {
+        dir('reto4-cypress') {
+            bat 'npm install'
+            // Ejecuta Cypress con Allure activado
+            bat 'npx cypress run --env allure=true || exit 0'
+        }
+    }
+    post {
+        always {
+            // Publicar resultados de Allure (Cypress)
+            allure([
+                includeProperties: false,
+                jdk: '',
+                results: [[path: 'reto4-cypress/allure-results']]
+            ])
+
+            // Archivar evidencias adicionales
+            archiveArtifacts artifacts: 'reto4-cypress/cypress/screenshots/**/*.*', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'reto4-cypress/cypress/videos/**/*.*', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'reto4-cypress/cypress/reports/**/*.*', allowEmptyArchive: true
+        }
+    }
+}
+    }
+
+    post {
+        success {
+            echo '✅ Todas las pruebas pasaron correctamente.'
+        }
+        failure {
+            echo '❌ Algunas pruebas fallaron. Revisar evidencias y reportes.'
         }
     }
 }

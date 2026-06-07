@@ -19,24 +19,13 @@ pipeline {
         stage('Ejecutar Selenium') {
             steps {
                 dir('reto4-selenium') {
-                    bat 'mvn -f pom.xml test'
+                    bat 'mvn clean test'
                 }
             }
             post {
                 always {
-                    script {
-                        def historyDir = "${env.WORKSPACE}/allure-report/history"
-                        def resultsDir = "${env.WORKSPACE}/reto4-selenium/allure-results"
-                        if (fileExists(historyDir)) {
-                            echo "Copiando historial de Allure..."
-                            bat "xcopy /E /I /Y \"${historyDir}\" \"${resultsDir}\\history\""
-                        }
-                    }
-                    allure([
-                        includeProperties: false,
-                        jdk: '',
-                        results: [[path: 'reto4-selenium/allure-results']]
-                    ])
+                    archiveArtifacts artifacts: 'reto4-selenium/allure-results/**/*.*', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'reto4-selenium/screenshots/**/*.*', allowEmptyArchive: true
                 }
             }
         }
@@ -52,47 +41,42 @@ pipeline {
         stage('Ejecutar Cypress') {
             steps {
                 dir('reto4-cypress') {
-                    bat 'npx cypress run --env allure=true || exit 0'
+                    bat 'npx cypress run --env allure=true'
                 }
             }
             post {
                 always {
-                    script {
-                        def historyDir = "${env.WORKSPACE}/allure-report/history"
-                        def resultsDir = "${env.WORKSPACE}/reto4-cypress/allure-results"
-                        if (fileExists(historyDir)) {
-                            echo "Copiando historial de Allure..."
-                            bat "xcopy /E /I /Y \"${historyDir}\" \"${resultsDir}\\history\""
-                        }
-                    }
-                    allure([
-                        includeProperties: false,
-                        jdk: '',
-                        results: [[path: 'reto4-cypress/allure-results']]
-                    ])
+                    archiveArtifacts artifacts: 'reto4-cypress/allure-results/**/*.*', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'reto4-cypress/cypress/screenshots/**/*.*', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'reto4-cypress/cypress/videos/**/*.*', allowEmptyArchive: true
                 }
             }
         }
         stage('Publicar reporte Allure') {
             steps {
-                allure([
+                allure(
                     includeProperties: false,
                     jdk: '',
                     results: [
                         [path: 'reto4-selenium/allure-results'],
                         [path: 'reto4-cypress/allure-results']
                     ]
-                ])
+                )
             }
         }
     }
 
     post {
         success {
-            echo '✅ Todas las pruebas pasaron correctamente.'
+            echo 'Todas las pruebas pasaron correctamente.'
         }
+
         failure {
-            echo '❌ Algunas pruebas fallaron. Revisar evidencias y reportes.'
+            echo 'Algunas pruebas fallaron. Revisar evidencias y reportes.'
+        }
+
+        always {
+        echo 'Reporte Allure generado.'
         }
     }
 }

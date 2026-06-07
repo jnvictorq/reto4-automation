@@ -5,17 +5,30 @@ When("selecciona un producto", () => {
 });
 
 When("agrega el producto al carrito", () => {
+  cy.on("window:alert", (text) => {
+    expect(text).to.contain("Product added");
+  });
+
   cy.get(".btn-success").click();
+
+  cy.wait(1000);
 });
 
 When("accede al carrito", () => {
   cy.get("#cartur").click();
+
+  cy.url().should("include", "cart");
+
+  cy.wait(2000);
 });
 
 When("completa el formulario de compra", () => {
-  cy.get(".btn-success").click(); // abrir modal
+  cy.contains("Place Order")
+    .should("be.visible")
+    .click();
 
-  cy.get("#orderModal").should("be.visible");
+  cy.get("#orderModal")
+    .should("be.visible");
 
   cy.get("#name").type("Juan");
   cy.get("#country").type("Bolivia");
@@ -26,16 +39,18 @@ When("completa el formulario de compra", () => {
 });
 
 When("confirma la orden", () => {
-  cy.contains("Purchase").click();
+  cy.contains("Purchase")
+    .should("be.visible")
+    .click();
 });
 
 Then("debe visualizar el mensaje de compra exitosa", () => {
-  cy.get(".sweet-alert").should("be.visible");
-  cy.contains("Thank you").should("exist");
+  cy.contains("Thank you for your purchase!", {
+    timeout: 15000
+  }).should("be.visible");
 });
 
 Then("debe visualizar el mensaje de producto agregado", () => {
-  cy.on("window:alert", (text) => {
-    expect(text).to.contain("Product added");
-  });
+  // La validación ya se realiza en el paso
+  // "agrega el producto al carrito"
 });

@@ -22,12 +22,6 @@ pipeline {
                     bat 'mvn clean test'
                 }
             }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'reto4-selenium/allure-results/**/*.*', allowEmptyArchive: true
-                    archiveArtifacts artifacts: 'reto4-selenium/screenshots/**/*.*', allowEmptyArchive: true
-                }
-            }
         }
 
         stage('Instalar dependencias Cypress') {
@@ -44,39 +38,37 @@ pipeline {
                     bat 'npx cypress run --env allure=true'
                 }
             }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'reto4-cypress/allure-results/**/*.*', allowEmptyArchive: true
-                    archiveArtifacts artifacts: 'reto4-cypress/cypress/screenshots/**/*.*', allowEmptyArchive: true
-                    archiveArtifacts artifacts: 'reto4-cypress/cypress/videos/**/*.*', allowEmptyArchive: true
-                }
-            }
-        }
-        stage('Publicar reporte Allure') {
-            steps {
-                allure(
-                    includeProperties: false,
-                    jdk: '',
-                    results: [
-                        [path: 'reto4-selenium/allure-results'],
-                        [path: 'reto4-cypress/allure-results']
-                    ]
-                )
-            }
         }
     }
 
     post {
-        success {
-            echo 'Todas las pruebas pasaron correctamente.'
-        }
 
-        failure {
-            echo 'Algunas pruebas fallaron. Revisar evidencias y reportes.'
-        }
+    always {
 
-        always {
-        echo 'Reporte Allure generado.'
-        }
+        allure([
+            includeProperties: false,
+            jdk: '',
+            results: [
+                [path: 'reto4-selenium/allure-results'],
+                [path: 'reto4-cypress/allure-results']
+            ]
+        ])
+
+        archiveArtifacts artifacts: '**/allure-results/**', allowEmptyArchive: true
+
+        echo "RESULTADO FINAL DEL BUILD: ${currentBuild.currentResult}"
     }
+
+    success {
+        echo '✅ Todas las pruebas pasaron correctamente.'
+    }
+
+    unstable {
+        echo '⚠️ Existen pruebas fallidas pero se generó el reporte.'
+    }
+
+    failure {
+        echo '❌ Algunas pruebas fallaron. Revisar Allure Report.'
+    }
+}
 }

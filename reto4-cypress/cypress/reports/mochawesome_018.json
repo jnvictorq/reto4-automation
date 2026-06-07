@@ -1,0 +1,90 @@
+{
+  "stats": {
+    "suites": 0,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-06-07T15:19:56.267Z",
+    "end": "2026-06-07T15:19:56.745Z",
+    "duration": 478,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b428b340-2e03-4491-83ef-f543483a4feb",
+      "title": "",
+      "fullFile": "cypress\\e2e\\login.cy.js",
+      "file": "cypress\\e2e\\login.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [
+        {
+          "title": "An uncaught error was detected outside of a test",
+          "fullTitle": "An uncaught error was detected outside of a test",
+          "timedOut": null,
+          "duration": 359,
+          "state": "failed",
+          "speed": null,
+          "pass": false,
+          "fail": true,
+          "pending": false,
+          "context": null,
+          "code": "throw err;",
+          "err": {
+            "message": "Error: The following error originated from your test code, not from Cypress.\n\n  > Expected to find a global registry (this usually means you are trying to define steps or hooks in support/e2e.js, which is not supported) (this might be a bug, please report at https://github.com/badeball/cypress-cucumber-preprocessor)\n\nWhen Cypress detects uncaught errors originating from your test code it will automatically fail the current test.\n\nCypress could not associate this error to any specific test.\n\nWe dynamically generated a new test to display this failure.",
+            "estack": "Error: The following error originated from your test code, not from Cypress.\n\n  > Expected to find a global registry (this usually means you are trying to define steps or hooks in support/e2e.js, which is not supported) (this might be a bug, please report at https://github.com/badeball/cypress-cucumber-preprocessor)\n\nWhen Cypress detects uncaught errors originating from your test code it will automatically fail the current test.\n\nCypress could not associate this error to any specific test.\n\nWe dynamically generated a new test to display this failure.\n    at createError (webpack://reto4-cypress/./node_modules/@badeball/cypress-cucumber-preprocessor/dist/helpers/error.js:10:0)\n    at fail (webpack://reto4-cypress/./node_modules/@badeball/cypress-cucumber-preprocessor/dist/helpers/assertions.js:18:0)\n    at assert (webpack://reto4-cypress/./node_modules/@badeball/cypress-cucumber-preprocessor/dist/helpers/assertions.js:24:0)\n    at ensure (webpack://reto4-cypress/./node_modules/@badeball/cypress-cucumber-preprocessor/dist/helpers/assertions.js:27:0)\n    at getRegistry (webpack://reto4-cypress/./node_modules/@badeball/cypress-cucumber-preprocessor/dist/registry.js:245:0)\n    at defineStep (webpack://reto4-cypress/./node_modules/@badeball/cypress-cucumber-preprocessor/dist/entrypoint-browser.js:77:0)\n    at eval (webpack://reto4-cypress/./cypress/e2e/login.cy.js:8:6)\n    at eval (http://localhost:50409/__cypress/tests?p=cypress\\e2e\\login.cy.js:22558:3)\n    at eval (http://localhost:50409/__cypress/tests?p=cypress\\e2e\\login.cy.js:22560:12)\n    at eval (<anonymous>)",
+            "diff": null
+          },
+          "uuid": "8077dbba-b58a-46fd-8a0f-315792fe8f96",
+          "parentUUID": "b428b340-2e03-4491-83ef-f543483a4feb",
+          "isHook": false,
+          "skipped": false
+        }
+      ],
+      "suites": [],
+      "passes": [],
+      "failures": [
+        "8077dbba-b58a-46fd-8a0f-315792fe8f96"
+      ],
+      "pending": [],
+      "skipped": [],
+      "duration": 359,
+      "root": true,
+      "rootEmpty": false,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

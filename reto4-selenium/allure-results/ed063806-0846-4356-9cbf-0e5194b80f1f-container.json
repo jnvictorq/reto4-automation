@@ -1,0 +1,1 @@
+{"uuid":"ed063806-0846-4356-9cbf-0e5194b80f1f","name":"Scenario: Eliminar producto del carrito","children":["6b46655b-01e9-4ad1-9539-7925f0156084"],"befores":[],"afters":[{"name":"steps.SignupSteps.tearDown()","status":"passed","stage":"finished","steps":[],"attachments":[],"parameters":[],"start":1780873211044,"stop":1780873211045}],"start":1780873191884,"stop":1780873211049}

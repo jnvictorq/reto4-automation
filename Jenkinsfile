@@ -3,59 +3,88 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Limpiar workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Clonar repositorio') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/jnvictorq/reto4-automation.git'
             }
         }
 
-        stage('Selenium Tests') {
+        stage('Ejecutar Selenium') {
             steps {
                 dir('reto4-selenium') {
-                    bat 'mvn -f pom.xml clean test'
+                    bat 'mvn -f pom.xml test'
                 }
             }
             post {
                 always {
-                    // Publicar resultados de Allure (Selenium)
+                    script {
+                        def historyDir = "${env.WORKSPACE}/allure-report/history"
+                        def resultsDir = "${env.WORKSPACE}/reto4-selenium/allure-results"
+                        if (fileExists(historyDir)) {
+                            echo "Copiando historial de Allure..."
+                            bat "xcopy /E /I /Y \"${historyDir}\" \"${resultsDir}\\history\""
+                        }
+                    }
                     allure([
                         includeProperties: false,
                         jdk: '',
                         results: [[path: 'reto4-selenium/allure-results']]
                     ])
-
-                    // Archivar evidencias adicionales
-                    archiveArtifacts artifacts: 'reto4-selenium/screenshots/**/*.*', allowEmptyArchive: true
-                    archiveArtifacts artifacts: 'reto4-selenium/reports/**/*.*', allowEmptyArchive: true
                 }
             }
         }
 
-        stage('Cypress Tests') {
-    steps {
-        dir('reto4-cypress') {
-            bat 'npm install'
-            // Ejecuta Cypress con Allure activado
-            bat 'npx cypress run --env allure=true || exit 0'
+        stage('Instalar dependencias Cypress') {
+            steps {
+                dir('reto4-cypress') {
+                    bat 'npm install'
+                }
+            }
         }
-    }
-    post {
-        always {
-            // Publicar resultados de Allure (Cypress)
-            allure([
-                includeProperties: false,
-                jdk: '',
-                results: [[path: 'reto4-cypress/allure-results']]
-            ])
 
-            // Archivar evidencias adicionales
-            archiveArtifacts artifacts: 'reto4-cypress/cypress/screenshots/**/*.*', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'reto4-cypress/cypress/videos/**/*.*', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'reto4-cypress/cypress/reports/**/*.*', allowEmptyArchive: true
+        stage('Ejecutar Cypress') {
+            steps {
+                dir('reto4-cypress') {
+                    bat 'npx cypress run --env allure=true || exit 0'
+                }
+            }
+            post {
+                always {
+                    script {
+                        def historyDir = "${env.WORKSPACE}/allure-report/history"
+                        def resultsDir = "${env.WORKSPACE}/reto4-cypress/allure-results"
+                        if (fileExists(historyDir)) {
+                            echo "Copiando historial de Allure..."
+                            bat "xcopy /E /I /Y \"${historyDir}\" \"${resultsDir}\\history\""
+                        }
+                    }
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        results: [[path: 'reto4-cypress/allure-results']]
+                    ])
+                }
+            }
         }
-    }
-}
+        stage('Publicar reporte Allure') {
+            steps {
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    results: [
+                        [path: 'reto4-selenium/allure-results'],
+                        [path: 'reto4-cypress/allure-results']
+                    ]
+                ])
+            }
+        }
     }
 
     post {

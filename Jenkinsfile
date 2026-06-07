@@ -18,6 +18,14 @@ pipeline {
             }
             post {
                 always {
+                    // Publicar resultados de Allure
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        results: [[path: 'reto4-selenium/target/allure-results']]
+                    ])
+
+                    // Archivar evidencias adicionales
                     archiveArtifacts artifacts: 'reto4-selenium/screenshots/**/*.*', allowEmptyArchive: true
                     archiveArtifacts artifacts: 'reto4-selenium/reports/**/*.*', allowEmptyArchive: true
                 }

@@ -1,0 +1,1 @@
+{"uuid":"fab12fc9-e5e7-4dd0-b81d-56ed2ed10392","name":"Scenario: Registro exitoso","children":["70300f61-c76a-4d5d-a489-28604c5a4e2d"],"befores":[],"afters":[{"name":"steps.SignupSteps.tearDown()","status":"passed","stage":"finished","steps":[],"attachments":[],"parameters":[],"start":1780871629928,"stop":1780871630275}],"start":1780871622085,"stop":1780871630275}

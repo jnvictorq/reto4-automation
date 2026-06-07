@@ -1,0 +1,1 @@
+{"uuid":"539117ae-99c9-427f-b064-4aa5deda68ad","name":"Scenario: Registro de usuario existente","children":["648f5c2b-6b03-4c89-8084-a2c6f8877e65"],"befores":[],"afters":[{"name":"steps.SignupSteps.tearDown()","status":"passed","stage":"finished","steps":[],"attachments":[],"parameters":[],"start":1780871636514,"stop":1780871636872}],"start":1780871630292,"stop":1780871636872}

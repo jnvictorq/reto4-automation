@@ -1,22 +1,31 @@
 package steps;
 
+import io.cucumber.java.After;
 import io.cucumber.java.en.*;
-import org.testng.Assert;
+
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
 import pages.HomePage;
 import pages.SignupPage;
 import utils.DriverFactory;
 
 public class SignupSteps {
 
-    WebDriver driver = DriverFactory.getDriver();
-    HomePage home = new HomePage(driver);
-    SignupPage signup = new SignupPage(driver);
+    private WebDriver driver;
+    private HomePage home;
+    private SignupPage signup;
 
-    String alertMessage;
+    private String alertMessage;
 
     @Given("el usuario se encuentra en la página principal")
     public void usuarioEnPaginaPrincipal() {
+
+        driver = DriverFactory.getDriver();
+
+        home = new HomePage(driver);
+        signup = new SignupPage(driver);
+
         home.open();
     }
 
@@ -27,14 +36,8 @@ public class SignupSteps {
 
     @And("ingresa un nuevo usuario")
     public void ingresaNuevoUsuario() {
-        alertMessage = signup.register("usuario_nuevo_" + System.currentTimeMillis(), "Password123");
-    }
-
-    @Then("debe visualizar el mensaje \"Sign up successful\"")
-    public void validarRegistroExitoso() {
-        // Usamos contains para ignorar el punto final
-        Assert.assertTrue(alertMessage.contains("Sign up successful"));
-        driver.quit();
+        String usuario = "usuario_nuevo_" + System.currentTimeMillis();
+        alertMessage = signup.register(usuario, "Password123");
     }
 
     @And("ingresa un usuario ya registrado")
@@ -42,9 +45,19 @@ public class SignupSteps {
         alertMessage = signup.register("juanvictor01", "123456");
     }
 
-    @Then("debe visualizar el mensaje \"This user already exist\"")
-    public void validarUsuarioExistente() {
-        Assert.assertTrue(alertMessage.contains("This user already exist"));
-        driver.quit();
+    @Then("debe visualizar el mensaje {string}")
+    public void validarMensaje(String mensajeEsperado) {
+
+        Assert.assertTrue(
+                alertMessage.contains(mensajeEsperado),
+                "Mensaje recibido: " + alertMessage
+        );
+    }
+
+    @After
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
